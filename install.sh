@@ -20,7 +20,7 @@ MY_BLOG_PARENT_DIR="/opt/myblog"
 
 # 博客使用域名
 # Blog domain name
-MY_BLOG_DOMAIN="blog.domain.com"
+MY_BLOG_DOMAIN="laosiji.io"
 
 # 数据库密码
 # Database password
@@ -28,11 +28,11 @@ MYSQL_PASSWORD="d123b456"
 
 # 数据库名
 # Database name
-DB_NAME="myblogDB"
+DB_NAME="myblog_db"
 
 # 是否使用 ssl 证书
 # Whether to use SSL certificate
-ENABLE_SSL=true
+ENABLE_SSL=false
 
 # 证书路径
 # Certificate path
