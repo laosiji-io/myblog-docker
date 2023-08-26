@@ -113,8 +113,6 @@ sourceEnv() {
 
     echoConfigInfo
 
-    mkdir -p ${MY_BLOG_PARENT_DIR}
-
     # 本地测试 (macOS)
     if [ "$(uname)" == "Darwin" ]; then
         source config.demo.env
@@ -126,10 +124,14 @@ sourceEnv() {
 
     # dir
     MY_BLOG_DOCKER_DIR="${MY_BLOG_PARENT_DIR}/myblog-docker"
-    MY_BLOG_SITE_DIR="${MY_BLOG_PARENT_DIR}/workdir/websites/${MY_BLOG_DOMAIN}/${MY_BLOG_TYPE}"
+    MY_BLOG_SITE_DIR="${MY_BLOG_PARENT_DIR}/workdir/websites/${MY_BLOG_DOMAIN}"
 
     # nginx conf
-    MY_BLOG_NGINX_CONF="${MY_BLOG_SITE_DIR}/conf/nginx/sites-enabled/01-${MY_BLOG_DOMAIN}.conf"
+    MY_BLOG_NGINX_CONF="${MY_BLOG_DOCKER_DIR}/conf/nginx/sites-enabled/01-${MY_BLOG_DOMAIN}.conf"
+
+    mkdir -p ${MY_BLOG_PARENT_DIR}
+    mkdir -p ${MY_BLOG_SITE_DIR}
+
 }
 
 # 下载 myblog-docker
@@ -164,10 +166,10 @@ replaceNginxConfBlog() {
 
         echo "ssl exists. enabled 443 and ssl."
 
-        mkdir -p ${BLOG_DIR}/workdir/ssl/${MY_BLOG_DOMAIN}
+        mkdir -p ${MY_BLOG_DOCKER_DIR}/workdir/ssl/${MY_BLOG_DOMAIN}
 
-        cp ${SSL_CER_PATH}  ${BLOG_DIR}/workdir/ssl/${MY_BLOG_DOMAIN}/ssl.cer
-        cp ${SSL_KEY_PATH}  ${BLOG_DIR}/workdir/ssl/${MY_BLOG_DOMAIN}/ssl.key
+        cp ${SSL_CER_PATH}  ${MY_BLOG_DOCKER_DIR}/workdir/ssl/${MY_BLOG_DOMAIN}/ssl.cer
+        cp ${SSL_KEY_PATH}  ${MY_BLOG_DOCKER_DIR}/workdir/ssl/${MY_BLOG_DOMAIN}/ssl.key
 
         LISTEN_PORT_REPLACE="443 ssl"
         SSL_CER_REPLACE="ssl_certificate     /workdir/ssl/${MY_BLOG_DOMAIN}/ssl.cer;"
@@ -206,26 +208,26 @@ replaceNginxConfBlog() {
 
 replaceDockerComposeYml() {
     # docker-compose.yml
-    cp  ${BLOG_DIR}/docker-compose.demo.yml ${BLOG_DIR}/docker-compose.yml
+    cp  ${MY_BLOG_DOCKER_DIR}/docker-compose.demo.yml ${MY_BLOG_DOCKER_DIR}/docker-compose.yml
 
     if [ "$(uname)" == "Darwin" ]; then
-        sed -i ".bak" "s|MYSQL_ROOT_PASSWORD_REPLACE|$MYSQL_PASSWORD|g"     ${BLOG_DIR}/docker-compose.yml
+        sed -i ".bak" "s|MYSQL_ROOT_PASSWORD_REPLACE|$MYSQL_PASSWORD|g"     ${MY_BLOG_DOCKER_DIR}/docker-compose.yml
 
-        rm -rf ${BLOG_DIR}/docker-compose.yml.bak
+        rm -rf ${MY_BLOG_DOCKER_DIR}/docker-compose.yml.bak
     else
-        sed -i        "s|MYSQL_ROOT_PASSWORD_REPLACE|$MYSQL_PASSWORD|g"     ${BLOG_DIR}/docker-compose.yml
+        sed -i        "s|MYSQL_ROOT_PASSWORD_REPLACE|$MYSQL_PASSWORD|g"     ${MY_BLOG_DOCKER_DIR}/docker-compose.yml
     fi
 }
 
 downloadTypechoCode() {
-    cd ${BLOG_DIR}/workdir/websites/${MY_BLOG_DOMAIN}
+    cd ${MY_BLOG_DOCKER_DIR}/workdir/websites/${MY_BLOG_DOMAIN}
     wget -N https://github.com/typecho/typecho/archive/refs/tags/v1.2.1.tar.gz
     tar zxf v1.2.1.tar.gz
     mv typecho-1.2.1 ${MY_BLOG_TYPE}
 }
 
 downloadWordpressCode() {
-    cd ${BLOG_DIR}/workdir/websites/${MY_BLOG_DOMAIN}
+    cd ${MY_BLOG_DOCKER_DIR}/workdir/websites/${MY_BLOG_DOMAIN}
     wget -N https://github.com/WordPress/WordPress/archive/refs/tags/6.2.2.tar.gz
     tar zxf 6.2.2.tar.gz
     mv WordPress-6.2.2 ${MY_BLOG_TYPE}
