@@ -129,7 +129,6 @@ sourceEnv() {
     MY_BLOG_NGINX_CONF="${MY_BLOG_DOCKER_DIR}/conf/nginx/sites-enabled/01-${MY_BLOG_DOMAIN}.conf"
 
     mkdir -p ${MY_BLOG_PARENT_DIR}
-    mkdir -p ${MY_BLOG_DOCKER_DIR}/workdir/websites/${MY_BLOG_DOMAIN}
 
 }
 
@@ -233,6 +232,9 @@ downloadWordpressCode() {
 }
 
 downBlogCode() {
+
+    mkdir -p ${MY_BLOG_DOCKER_DIR}/workdir/websites/${MY_BLOG_DOMAIN}
+
     # typecho
     if [ "${MY_BLOG_TYPE}" == "typecho" ]; then
         downloadTypechoCode
