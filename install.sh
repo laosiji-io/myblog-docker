@@ -124,13 +124,12 @@ sourceEnv() {
 
     # dir
     MY_BLOG_DOCKER_DIR="${MY_BLOG_PARENT_DIR}/myblog-docker"
-    MY_BLOG_SITE_DIR="${MY_BLOG_PARENT_DIR}/workdir/websites/${MY_BLOG_DOMAIN}"
 
     # nginx conf
     MY_BLOG_NGINX_CONF="${MY_BLOG_DOCKER_DIR}/conf/nginx/sites-enabled/01-${MY_BLOG_DOMAIN}.conf"
 
     mkdir -p ${MY_BLOG_PARENT_DIR}
-    mkdir -p ${MY_BLOG_SITE_DIR}
+    mkdir -p ${MY_BLOG_DOCKER_DIR}/workdir/websites/${MY_BLOG_DOMAIN}
 
 }
 
@@ -276,6 +275,9 @@ createDB() {
 
 install() {
     check
+
+    rmDockerContainer
+
     sourceEnv
     downloadMyBlogDocker
     copyConfig
