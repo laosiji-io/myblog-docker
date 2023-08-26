@@ -110,7 +110,11 @@ config() {
 
 sourceEnv() {
     source $(pwd)/config.env
+
     echoConfigInfo
+
+    mkdir -p ${MY_BLOG_PARENT_DIR}
+
     # 本地测试 (macOS)
     if [ "$(uname)" == "Darwin" ]; then
         source config.demo.env
@@ -130,7 +134,9 @@ sourceEnv() {
 
 # 下载 myblog-docker
 downloadMyBlogDocker() {
+
     cd ${MY_BLOG_PARENT_DIR}
+
     git clone https://github.com/laosiji-io/myblog-docker.git
 }
 
