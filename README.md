@@ -13,7 +13,7 @@ wget https://raw.githubusercontent.com/laosiji-io/myblog-docker/master/install.s
 
 ## 生成配置文件
 ```shell
-bash install config
+bash install.sh config
 ```
 
 > 会在当前目录生成一个 config.env 的配置文件
