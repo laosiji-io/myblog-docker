@@ -16,7 +16,6 @@ services:
       - myblog_docker
     ports:
       - "80:80"
-      - "443:443"
     depends_on:
       - php
 
